@@ -9,8 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.UUID;
 
+    private Postgres() {
 public class Postgres {
+        // Private constructor to prevent instantiation
 
+    }
     public static Connection connection() {
         try {
             Class.forName("org.postgresql.Driver");

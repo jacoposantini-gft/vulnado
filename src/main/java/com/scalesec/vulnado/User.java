@@ -31,7 +31,7 @@ public class User {
         .setSigningKey(key)
         .parseClaimsJws(token);
     } catch(Exception e) {
-      e.printStackTrace();
+      throw new Unauthorized(e.getMessage());
       throw new Unauthorized(e.getMessage());
     }
   }
@@ -44,9 +44,11 @@ public class User {
       stmt = cxn.createStatement();
       System.out.println("Opened database successfully");
 
-      String query = "select * from users where username = '" + un + "' limit 1";
+      String query = "select * from users where username = ? limit 1";
+      PreparedStatement pstmt = cxn.prepareStatement(query);
       System.out.println(query);
-      ResultSet rs = stmt.executeQuery(query);
+      pstmt.setString(1, un);
+      ResultSet rs = pstmt.executeQuery();
       if (rs.next()) {
         String user_id = rs.getString("user_id");
         String username = rs.getString("username");
@@ -58,7 +60,6 @@ public class User {
       e.printStackTrace();
       System.err.println(e.getClass().getName()+": "+e.getMessage());
     } finally {
-      return user;
     }
   }
 }

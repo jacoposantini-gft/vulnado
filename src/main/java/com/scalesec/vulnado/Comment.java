@@ -38,7 +38,7 @@ public class Comment {
     List<Comment> comments = new ArrayList();
     try {
       Connection cxn = Postgres.connection();
-      stmt = cxn.createStatement();
+      try (Statement stmt = cxn.createStatement()) {
 
       String query = "select * from comments;";
       ResultSet rs = stmt.executeQuery(query);
@@ -52,10 +52,7 @@ public class Comment {
       }
       cxn.close();
     } catch (Exception e) {
-      e.printStackTrace();
       System.err.println(e.getClass().getName()+": "+e.getMessage());
-    } finally {
-      return comments;
     }
   }
 
@@ -63,20 +60,18 @@ public class Comment {
     try {
       String sql = "DELETE FROM comments where id = ?";
       Connection con = Postgres.connection();
-      PreparedStatement pStatement = con.prepareStatement(sql);
+      try (PreparedStatement pStatement = con.prepareStatement(sql)) {
       pStatement.setString(1, id);
       return 1 == pStatement.executeUpdate();
     } catch(Exception e) {
-      e.printStackTrace();
     } finally {
-      return false;
     }
   }
 
   private Boolean commit() throws SQLException {
     String sql = "INSERT INTO comments (id, username, body, created_on) VALUES (?,?,?,?)";
     Connection con = Postgres.connection();
-    PreparedStatement pStatement = con.prepareStatement(sql);
+    try (PreparedStatement pStatement = con.prepareStatement(sql)) {
     pStatement.setString(1, this.id);
     pStatement.setString(2, this.username);
     pStatement.setString(3, this.body);

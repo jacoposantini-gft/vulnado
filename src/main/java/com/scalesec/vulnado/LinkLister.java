@@ -1,6 +1,7 @@
 package com.scalesec.vulnado;
 
 import org.jsoup.Jsoup;
+import java.util.logging.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.io.IOException;
 import java.net.*;
 
+private LinkLister() {}
 
 public class LinkLister {
   public static List<String> getLinks(String url) throws IOException {
@@ -25,7 +27,7 @@ public class LinkLister {
     try {
       URL aUrl= new URL(url);
       String host = aUrl.getHost();
-      System.out.println(host);
+      logger.info(host);
       if (host.startsWith("172.") || host.startsWith("192.168") || host.startsWith("10.")){
         throw new BadRequest("Use of Private IP");
       } else {

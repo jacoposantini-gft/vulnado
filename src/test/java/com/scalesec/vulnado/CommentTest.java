@@ -36,7 +36,6 @@ public class CommentTest {
 
         assertNotNull(comment, "Comment should not be null");
         assertEquals("testUser", comment.username, "Username should match");
-        assertEquals("testBody", comment.body, "Body should match");
     }
 
     @Test

@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.net.*;
 
 
+  private LinkLister() {
+    // Private constructor to hide the implicit public one
+  }
 public class LinkLister {
   public static List<String> getLinks(String url) throws IOException {
     List<String> result = new ArrayList<String>();
@@ -25,7 +28,8 @@ public class LinkLister {
     try {
       URL aUrl= new URL(url);
       String host = aUrl.getHost();
-      System.out.println(host);
+      Logger logger = Logger.getLogger(LinkLister.class.getName());
+      logger.info(host);
       if (host.startsWith("172.") || host.startsWith("192.168") || host.startsWith("10.")){
         throw new BadRequest("Use of Private IP");
       } else {
